@@ -81,13 +81,15 @@ const ThemeToggleButton = React.memo(({ theme, toggleTheme }: ThemeToggleProps) 
     return (
         <button
             onClick={toggleTheme}
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-transparent hover:bg-surfaceHighlight/70 text-textSecondary hover:text-textPrimary transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-transparent hover:bg-surfaceHighlight/80 text-textSecondary hover:text-textPrimary transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-safe:hover:scale-110 active:scale-95 border border-transparent hover:border-border/20"
             role="switch"
             aria-checked={isDark}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            style={{ willChange: 'transform' }}
         >
             <div className="relative w-5 h-5 overflow-hidden">
-                <Sun size={18} strokeWidth={2.5} className={cn("absolute inset-0 transition-all duration-500 ease-cubic-bezier", isDark ? "opacity-100 motion-safe:transform motion-safe:rotate-0 motion-safe:scale-100" : "opacity-0 motion-safe:transform motion-safe:rotate-90 motion-safe:scale-50")} aria-hidden={!isDark} />
-                <Moon size={18} strokeWidth={2.5} className={cn("absolute inset-0 transition-all duration-500 ease-cubic-bezier", isDark ? "opacity-0 motion-safe:transform motion-safe:-rotate-90 motion-safe:scale-50" : "opacity-100 motion-safe:transform motion-safe:rotate-0 motion-safe:scale-100")} aria-hidden={isDark} />
+                <Sun size={18} strokeWidth={2.5} className={cn("absolute inset-0 transition-all duration-700 ease-out", isDark ? "opacity-100 motion-safe:rotate-0 motion-safe:scale-100" : "opacity-0 motion-safe:rotate-180 motion-safe:scale-0")} aria-hidden={!isDark} />
+                <Moon size={18} strokeWidth={2.5} className={cn("absolute inset-0 transition-all duration-700 ease-out", isDark ? "opacity-0 motion-safe:-rotate-180 motion-safe:scale-0" : "opacity-100 motion-safe:rotate-0 motion-safe:scale-100")} aria-hidden={isDark} />
             </div>
         </button>
     );
@@ -107,7 +109,7 @@ export const Header = React.memo(({ theme, toggleTheme, activeLeague, onLeagueCh
   const isScrolled = useScrollPosition(10);
 
   return (
-    <header className={cn("flex-shrink-0 z-50 sticky top-0 transition-all duration-300 ease-cubic-bezier", isScrolled ? 'bg-background/80 dark:bg-background/70 backdrop-blur-xl shadow-sm border-b border-border/15' : 'bg-transparent border-b border-transparent')}>
+    <header className={cn("flex-shrink-0 z-50 sticky top-0 transition-all duration-500 ease-out", isScrolled ? 'bg-surface/70 backdrop-blur-2xl shadow-glass border-b border-border/20' : 'bg-transparent border-b border-transparent')}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         
         <div className="flex items-center gap-3 sm:gap-6">
@@ -119,31 +121,31 @@ export const Header = React.memo(({ theme, toggleTheme, activeLeague, onLeagueCh
             </div>
             </a>
             
-            {/* League Toggle Pill - Made visible on mobile by removing 'hidden' */}
-            <div className="flex bg-surfaceHighlight/50 border border-border/10 rounded-full p-0.5 relative">
-                 <button 
+            {/* League Toggle Pill - Premium Vercel-style */}
+            <div className="flex bg-surfaceHighlight/60 border border-border/15 rounded-full p-1 relative shadow-glass-inset backdrop-blur-sm">
+                 <button
                     onClick={() => onLeagueChange('NHL')}
                     className={cn(
-                        "px-3 py-1 text-xs font-bold rounded-full transition-all duration-300 relative z-10",
+                        "px-4 py-1.5 text-[11px] font-extrabold rounded-full transition-all duration-500 relative z-10 tracking-wide",
                         activeLeague === 'NHL' ? "text-textPrimary" : "text-textTertiary hover:text-textSecondary"
                     )}
                  >
                     NHL
                  </button>
-                 <button 
+                 <button
                     onClick={() => onLeagueChange('NFL')}
                     className={cn(
-                        "px-3 py-1 text-xs font-bold rounded-full transition-all duration-300 relative z-10",
+                        "px-4 py-1.5 text-[11px] font-extrabold rounded-full transition-all duration-500 relative z-10 tracking-wide",
                         activeLeague === 'NFL' ? "text-textPrimary" : "text-textTertiary hover:text-textSecondary"
                     )}
                  >
                     NFL
                  </button>
-                 {/* Sliding Indicator */}
-                 <div 
+                 {/* Sliding Indicator with shadow */}
+                 <div
                     className={cn(
-                        "absolute top-0.5 bottom-0.5 w-[calc(50%-2px)] bg-surface shadow-sm rounded-full transition-transform duration-300 ease-cubic-bezier z-0",
-                        activeLeague === 'NFL' ? "translate-x-full" : "translate-x-0"
+                        "absolute top-1 bottom-1 w-[calc(50%-4px)] bg-surface shadow-md rounded-full transition-all duration-500 ease-out z-0 border border-border/10",
+                        activeLeague === 'NFL' ? "translate-x-[calc(100%+4px)]" : "translate-x-0"
                     )}
                  />
             </div>

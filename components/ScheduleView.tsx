@@ -5,6 +5,10 @@ import { GameData, League } from '../types';
 import { GameCard } from './GameCard';
 import { RefreshCw, AlertCircle, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 
+const cn = (...classes: (string | boolean | undefined | null)[]): string => {
+  return classes.filter(Boolean).join(' ');
+};
+
 interface ScheduleViewProps {
   onAnalyze?: (game: GameData) => void;
   league: League;
@@ -100,90 +104,105 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({ onAnalyze, league })
 
   if (isLoading && games.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-4">
-        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-[10px] text-textTertiary uppercase tracking-widest animate-pulse font-medium">Syncing {league} Odds...</p>
+      <div className="flex flex-col items-center justify-center h-full gap-5">
+        <div className="relative">
+          <div className="w-10 h-10 border-3 border-accent/30 border-t-accent rounded-full motion-safe:animate-spin"></div>
+          <div className="absolute inset-0 w-10 h-10 border-3 border-transparent border-t-accent/50 rounded-full motion-safe:animate-ping"></div>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-xs text-textPrimary font-bold uppercase tracking-[0.15em] motion-safe:animate-pulse">Syncing {league} Odds</p>
+          <div className="flex gap-1">
+            <div className="w-1.5 h-1.5 bg-accent rounded-full motion-safe:animate-bounce" style={{ animationDelay: '0ms' }}></div>
+            <div className="w-1.5 h-1.5 bg-accent rounded-full motion-safe:animate-bounce" style={{ animationDelay: '150ms' }}></div>
+            <div className="w-1.5 h-1.5 bg-accent rounded-full motion-safe:animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-slide-up">
-        <div className="w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center mb-4 border border-danger/10">
-          <AlertCircle className="w-6 h-6 text-danger" />
+      <div className="flex flex-col items-center justify-center h-full text-center p-8 motion-safe:animate-slide-up">
+        <div className="w-16 h-16 rounded-2xl bg-danger/10 flex items-center justify-center mb-5 border border-danger/20 shadow-lg backdrop-blur-sm">
+          <AlertCircle className="w-7 h-7 text-danger" strokeWidth={2.5} />
         </div>
-        <h3 className="text-lg font-bold text-textPrimary mb-2">Market Unavailable</h3>
-        <p className="text-sm text-textSecondary mb-6 max-w-xs mx-auto leading-relaxed">
+        <h3 className="text-xl font-bold text-textPrimary mb-2.5 tracking-tight">Market Unavailable</h3>
+        <p className="text-sm text-textSecondary mb-7 max-w-xs mx-auto leading-relaxed">
           Could not retrieve the slate for this date. The market might be closed.
         </p>
-        <button 
+        <button
           onClick={() => loadData(false)}
-          className="glass-button px-6 py-2 rounded-full text-sm font-medium text-textPrimary flex items-center gap-2"
+          className="glass-button px-7 py-3 rounded-xl text-sm font-bold text-textPrimary flex items-center gap-2.5 shadow-md hover:shadow-xl motion-safe:hover:scale-105 active:scale-100 transition-all duration-300"
+          style={{ willChange: 'transform' }}
         >
-          <RefreshCw size={14} /> Retry Sync
+          <RefreshCw size={15} strokeWidth={2.5} />
+          <span>Retry Sync</span>
         </button>
       </div>
     );
   }
 
   return (
-    <div className="px-4 md:px-6 py-2 pb-20 animate-slide-up">
+    <div className="px-4 md:px-6 py-3 pb-20 animate-slide-up">
       {/* Date Navigation & Controls Header */}
-      <div className="flex flex-col gap-4 mb-4">
-          
+      <div className="flex flex-col gap-5 mb-6">
+
           {/* Top Row: League/Status & Last Update */}
           <div className="flex items-center justify-between px-1">
-             <div className="flex items-center gap-3">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+             <div className="flex items-center gap-3.5">
+                <span className="flex h-2.5 w-2.5 relative">
+                  <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success shadow-glow-accent-sm"></span>
                 </span>
                 <div className="flex flex-col">
-                  <h2 className="text-xs font-bold text-textSecondary tracking-widest uppercase">{league} Board</h2>
-                  <span className="text-[9px] text-textTertiary font-mono hidden md:block">
+                  <h2 className="text-xs font-extrabold text-textSecondary tracking-[0.12em] uppercase">{league} Board</h2>
+                  <span className="text-[9px] text-textTertiary font-mono hidden md:block mt-0.5">
                     Updated: {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                   </span>
                 </div>
             </div>
-            
-            {/* Date Navigator */}
-            <div className="flex items-center bg-surfaceHighlight/50 border border-border/10 rounded-full p-0.5">
-                <button 
+
+            {/* Premium Date Navigator */}
+            <div className="flex items-center bg-surfaceHighlight/60 border border-border/15 rounded-full p-1 shadow-glass-inset backdrop-blur-sm">
+                <button
                     onClick={() => changeDate(-1)}
-                    className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-surface text-textTertiary hover:text-textPrimary transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface text-textTertiary hover:text-textPrimary transition-all duration-300 motion-safe:hover:scale-110 active:scale-95"
                     aria-label="Previous Day"
+                    style={{ willChange: 'transform' }}
                 >
-                    <ChevronLeft size={16} />
+                    <ChevronLeft size={16} strokeWidth={2.5} />
                 </button>
-                <div className="px-4 min-w-[100px] text-center">
+                <div className="px-5 min-w-[110px] text-center">
                     <span className="text-xs font-bold text-textPrimary uppercase tracking-wide">
                         {formatDate(currentDate)}
                     </span>
                 </div>
-                <button 
+                <button
                     onClick={() => changeDate(1)}
-                    className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-surface text-textTertiary hover:text-textPrimary transition-colors"
+                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface text-textTertiary hover:text-textPrimary transition-all duration-300 motion-safe:hover:scale-110 active:scale-95"
                     aria-label="Next Day"
+                    style={{ willChange: 'transform' }}
                 >
-                    <ChevronRight size={16} />
+                    <ChevronRight size={16} strokeWidth={2.5} />
                 </button>
             </div>
           </div>
           
-          {/* Bottom Row: Bookmaker Toggle */}
+          {/* Premium Bookmaker Selector */}
           <div className="flex justify-end px-1">
-            <div className="flex bg-surfaceHighlight/50 border border-border/10 rounded-lg p-0.5">
+            <div className="flex bg-surfaceHighlight/60 border border-border/15 rounded-xl p-1 shadow-glass-inset backdrop-blur-sm gap-1">
               {books.map((book) => (
                  <button
                    key={book.id}
                    onClick={() => setSelectedBook(book.id)}
-                   className={`
-                     px-2 md:px-3 py-1 text-[10px] font-bold rounded-md transition-all duration-300
-                     ${selectedBook === book.id 
-                       ? 'bg-surface shadow-sm text-accent' 
-                       : 'text-textTertiary hover:text-textSecondary'}
-                   `}
+                   className={cn(
+                     "px-3 md:px-4 py-1.5 text-[10px] font-extrabold rounded-lg transition-all duration-500 uppercase tracking-wide",
+                     selectedBook === book.id
+                       ? 'bg-surface shadow-md text-accent border border-accent/20 motion-safe:scale-105'
+                       : 'text-textTertiary hover:text-textPrimary hover:bg-surface/50 motion-safe:hover:scale-105 active:scale-95'
+                   )}
+                   style={{ willChange: 'transform' }}
                  >
                    {book.label}
                  </button>

@@ -115,30 +115,36 @@ const OddsCell = React.memo(({ label, main, sub, isFavorite = false, isDisabled 
     }, [isFavorite, isDisabled, movement]);
 
     return (
-        <button 
+        <button
             onClick={isInteractive ? onClick : undefined}
             disabled={!isInteractive}
             aria-label={ariaLabel}
             className={cn(
-                "group relative flex flex-col items-center justify-center py-3 px-2 rounded-lg border transition-all duration-200 select-none focus-visible:outline-none",
+                "group/odds relative flex flex-col items-center justify-center py-3.5 px-2 rounded-xl border transition-all duration-300 select-none focus-visible:outline-none overflow-hidden",
                 !isInteractive
                 ? 'bg-transparent border-transparent opacity-40 cursor-default'
-                : isFavorite 
-                    ? 'bg-accent/10 border-accent/30 hover:bg-accent/15 shadow-glow-accent-sm' 
-                    : 'bg-surfaceHighlight/60 border-transparent hover:border-border/20 hover:bg-surfaceHighlight cursor-pointer motion-safe:hover:scale-[1.02]',
+                : isFavorite
+                    ? 'bg-accent/8 border-accent/25 hover:bg-accent/14 hover:border-accent/40 shadow-glow-accent-sm hover:shadow-md cursor-pointer motion-safe:hover:scale-105 active:scale-100'
+                    : 'bg-surfaceHighlight/50 border-border/10 hover:border-border/30 hover:bg-surfaceHighlight/80 cursor-pointer motion-safe:hover:scale-105 active:scale-100 hover:shadow-sm',
                 isInteractive && "focus-visible:ring-2 focus-visible:ring-accent focus-visible:z-10"
             )}
+            style={isInteractive ? { willChange: 'transform' } : undefined}
         >
+            {/* Subtle shimmer effect on hover */}
+            {isInteractive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover/odds:opacity-100 group-hover/odds:translate-x-full transition-all duration-700 -translate-x-full" aria-hidden="true" />
+            )}
+
             {movement !== 'none' && isInteractive && (
-                <div className="absolute left-1 top-1/2 transform -translate-y-1/2" aria-hidden="true">
-                    {movement === 'up' ? <ArrowUp size={10} className="text-green-500" /> : <ArrowDown size={10} className="text-red-500" />}
+                <div className="absolute left-1.5 top-1.5 z-10" aria-hidden="true">
+                    {movement === 'up' ? <ArrowUp size={11} className="text-success" strokeWidth={3} /> : <ArrowDown size={11} className="text-danger" strokeWidth={3} />}
                 </div>
             )}
-            <span className={cn("font-mono text-sm font-semibold tabular-nums tracking-tight z-10", mainColor)}>
+            <span className={cn("font-mono text-base font-bold tabular-nums tracking-tight z-10 transition-colors duration-300", mainColor)}>
                 {main}
             </span>
             {sub && (
-                <span className={cn("text-[11px] font-mono mt-1 tabular-nums z-10", isFavorite && isInteractive ? 'text-accent/80' : 'text-textSecondary')}>
+                <span className={cn("text-[10px] font-mono mt-1 tabular-nums z-10 transition-colors duration-300", isFavorite && isInteractive ? 'text-accent/70 group-hover/odds:text-accent' : 'text-textSecondary group-hover/odds:text-textPrimary')}>
                     {sub}
                 </span>
             )}
@@ -246,10 +252,14 @@ export const GameCard = React.memo(({ game, selectedBook, onAnalyze, onBetClick 
   }, [onBetClick, id, odds, selectedBook, boardLocked]);
 
   return (
-    <article 
-        className="glass-panel-subtle rounded-xl overflow-hidden mb-4 border border-border/15 bg-noise hover:border-border/30 transition-all duration-300 ease-out relative group/card shadow-sm hover:shadow-md"
+    <article
+        className="relative overflow-hidden mb-4 rounded-2xl border border-border/20 bg-noise group/card transition-all duration-500 ease-out hover:border-border/40 shadow-glass hover:shadow-md backdrop-blur-sm bg-surface/80 motion-safe:hover:scale-[1.005]"
+        style={{ willChange: 'transform' }}
     >
-      <div className="flex flex-col md:flex-row">
+      {/* Subtle gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-accent/0 to-accent/5 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none" aria-hidden="true" />
+
+      <div className="flex flex-col md:flex-row relative z-10">
         <div className="flex-1 p-5 md:p-6 relative">
           <div className="absolute top-5 right-5 md:top-6 md:right-6 z-10">
             <StatusBadge status={status} time={time} />
@@ -290,17 +300,18 @@ export const GameCard = React.memo(({ game, selectedBook, onAnalyze, onBetClick 
             </div>
           </div>
           {onAnalyze && (
-            <button 
+            <button
               onClick={handleAnalyzeClick}
-              className="absolute bottom-5 right-5 md:bottom-6 md:right-6 opacity-0 motion-safe:translate-y-2 group-hover/card:opacity-100 group-hover/card:motion-safe:translate-y-0 transition-all duration-300 ease-out glass-button-vibrant px-4 py-2 rounded-lg flex items-center gap-2 shadow-md focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="absolute bottom-5 right-5 md:bottom-6 md:right-6 opacity-0 motion-safe:translate-y-3 group-hover/card:opacity-100 group-hover/card:motion-safe:translate-y-0 transition-all duration-500 ease-out glass-button-vibrant px-5 py-2.5 rounded-xl flex items-center gap-2.5 shadow-md hover:shadow-xl focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-safe:hover:scale-105 active:scale-100"
+              style={{ willChange: 'transform, opacity' }}
             >
-              <TrendingUp size={14} strokeWidth={2.5} className="text-accent" />
-              <span className="text-sm font-semibold text-textPrimary">Analyze</span>
+              <TrendingUp size={16} strokeWidth={2.5} className="text-accent" />
+              <span className="text-sm font-bold text-textPrimary">Analyze</span>
             </button>
           )}
         </div>
 
-        <div className="bg-background/30 dark:bg-black/15 backdrop-blur-sm p-4 md:w-[370px] flex flex-col justify-center border-t md:border-t-0 md:border-l border-border/15 relative">
+        <div className="relative bg-surfaceHighlight/30 dark:bg-surfaceHighlight/20 backdrop-blur-md p-5 md:w-[380px] flex flex-col justify-center border-t md:border-t-0 md:border-l border-border/20">
           {boardLocked && (
              <div className="absolute inset-0 bg-surface/50 backdrop-blur-sm z-20 flex items-center justify-center flex-col gap-3">
                 <Lock size={24} className="text-textSecondary" />
@@ -308,10 +319,10 @@ export const GameCard = React.memo(({ game, selectedBook, onAnalyze, onBetClick 
              </div>
           )}
           <div role="grid">
-              <div className="grid grid-cols-3 gap-3 mb-3 px-1" role="row">
-                <span className="text-[10px] font-bold text-textTertiary uppercase tracking-widest text-center" role="columnheader">{spreadLabel}</span>
-                <span className="text-[10px] font-bold text-textTertiary uppercase tracking-widest text-center" role="columnheader">Total</span>
-                <span className="text-[10px] font-bold text-textTertiary uppercase tracking-widest text-center" role="columnheader">Moneyline</span>
+              <div className="grid grid-cols-3 gap-3 mb-4 px-1" role="row">
+                <span className="text-[9px] font-extrabold text-textTertiary/80 uppercase tracking-[0.15em] text-center" role="columnheader">{spreadLabel}</span>
+                <span className="text-[9px] font-extrabold text-textTertiary/80 uppercase tracking-[0.15em] text-center" role="columnheader">Total</span>
+                <span className="text-[9px] font-extrabold text-textTertiary/80 uppercase tracking-[0.15em] text-center" role="columnheader">Moneyline</span>
               </div>
               <div className="grid grid-cols-3 gap-3 mb-3" role="row">
                 <OddsCell label={`${awayTeamName} Spread`} main={processedOdds?.awayPL.line || '-'} sub={processedOdds?.awayPL.juice} isDisabled={boardLocked} onClick={onBetClick ? () => handleBet('PL', 'away') : undefined} />

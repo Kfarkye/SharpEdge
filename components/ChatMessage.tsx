@@ -327,15 +327,16 @@ const Avatar = React.memo(({ isModel, isError }: AvatarProps) => {
 
 
   return (
-    <div 
+    <div
         className={cn(
-            "w-9 h-9 rounded-xl flex items-center justify-center shadow-md border transition-colors duration-300",
+            "w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg border transition-all duration-500 motion-safe:hover:scale-110",
             style.bgClass
-        )} 
+        )}
         role="img"
         aria-label={style.ariaLabel}
+        style={{ willChange: 'transform' }}
     >
-      <style.Icon size={16} strokeWidth={2.5} className={style.iconClass} aria-hidden="true" />
+      <style.Icon size={17} strokeWidth={2.5} className={style.iconClass} aria-hidden="true" />
     </div>
   );
 });
@@ -429,13 +430,13 @@ export const ChatMessage = React.memo(({ message }: ChatMessageProps) => {
 
   const bubbleStyle = useMemo(() => {
     if (isError) {
-        return 'bg-red-900/60 border border-red-500/50 text-red-100 backdrop-blur-md shadow-lg';
+        return 'bg-red-900/70 border border-red-500/60 text-red-100 backdrop-blur-xl shadow-xl';
     }
     if (isModel) {
-        return 'bg-surface/70 border border-border/15 text-textPrimary backdrop-blur-lg shadow-sm hover:shadow-md transition-shadow duration-300';
+        return 'bg-surface/75 border border-border/20 text-textPrimary backdrop-blur-2xl shadow-glass hover:shadow-md transition-all duration-500';
     }
-    // FIX: Dark mode text fix applied here as well (White accent requires black text)
-    return 'bg-accent text-white dark:text-black shadow-glow-sm border border-white/10 dark:border-black/5 shadow-md';
+    // Premium user message bubble with refined styling
+    return 'bg-accent text-white dark:text-black shadow-glow-sm border border-white/15 dark:border-black/10 shadow-lg hover:shadow-xl transition-all duration-300';
   }, [isModel, isError]);
 
   const ariaLabel = useMemo(() => {
@@ -445,9 +446,9 @@ export const ChatMessage = React.memo(({ message }: ChatMessageProps) => {
   }, [isModel, isError, timestamp, content]);
 
   return (
-    <article 
+    <article
         className={cn(
-            "flex w-full mb-6 md:mb-8 group motion-safe:animate-fadeIn",
+            "flex w-full mb-7 md:mb-9 group motion-safe:animate-fadeIn",
             isModel ? 'justify-start' : 'justify-end'
         )}
         aria-label={ariaLabel}
@@ -455,21 +456,21 @@ export const ChatMessage = React.memo(({ message }: ChatMessageProps) => {
         data-message-id={id}
         data-role={role}
     >
-      <div 
+      <div
         className={cn(
-          "flex max-w-full sm:max-w-[90%] lg:max-w-[85%] xl:max-w-[80%] gap-3 sm:gap-4",
+          "flex max-w-full sm:max-w-[90%] lg:max-w-[85%] xl:max-w-[80%] gap-3.5 sm:gap-4",
           isModel ? 'flex-row' : 'flex-row-reverse'
         )}
       >
-        <div className="flex-shrink-0 mt-0.5">
+        <div className="flex-shrink-0 mt-1">
           <Avatar isModel={isModel} isError={isError} />
         </div>
-        
+
         <div className="flex flex-col min-w-0 flex-1">
-            <div 
+            <div
                 className={cn(
-                    "p-5 rounded-2xl",
-                    !isError && (isModel ? 'rounded-tl-sm' : 'rounded-tr-sm'),
+                    "p-6 rounded-3xl relative",
+                    !isError && (isModel ? 'rounded-tl-md' : 'rounded-tr-md'),
                     bubbleStyle
                 )}
             >

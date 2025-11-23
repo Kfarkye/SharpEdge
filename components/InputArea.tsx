@@ -94,18 +94,18 @@ const SendButton = memo(({ canSubmit, isLoading, prefersReducedMotion }: SendBut
         // Duration 500ms with the dynamic curve provides a fluid yet snappy feel
         : `transition-all duration-500 ${APPLE_DYNAMIC_EASING}`;
 
-    // Vercel/Linear style interaction: Responsive button with smooth GPU-accelerated animation.
+    // Apple-level interaction: Responsive button with smooth GPU-accelerated animation
     const buttonClasses = `
-        flex-shrink-0 w-10 h-10 mb-1.5 rounded-full flex items-center justify-center transform-gpu
+        flex-shrink-0 w-11 h-11 mb-1 rounded-full flex items-center justify-center transform-gpu
         ${transitionClasses}
         ${canSubmit
-          // Active state: vibrant color, subtle glow (assumes 'shadow-glow' is configured)
-          ? 'bg-accent text-white dark:text-black shadow-glow'
-          // Inactive state: muted appearance, clear affordance
-          : 'bg-surfaceHighlight text-textTertiary opacity-50 cursor-not-allowed'}
+          // Active state: vibrant color with premium glow
+          ? 'bg-accent text-white dark:text-black shadow-glow-sm hover:shadow-xl'
+          // Inactive state: muted with refined styling
+          : 'bg-surfaceHighlight/50 text-textTertiary opacity-40 cursor-not-allowed'}
         ${canSubmit && !prefersReducedMotion
-            // Tactile feedback: scale on hover and press
-            ? 'hover:scale-110 active:scale-95'
+            // Premium tactile feedback
+            ? 'hover:scale-[1.15] active:scale-95 hover:rotate-12 active:rotate-0'
             : ''}
     `;
 
@@ -264,13 +264,13 @@ export const InputArea = memo(forwardRef<InputAreaHandle, InputAreaProps>(({
   const transitionClasses = prefersReducedMotion ? 'transition-none' : 'transition-all duration-300 ease-in-out';
 
   const containerClasses = `
-    relative flex items-end gap-3 p-2 rounded-[28px] bg-surface/80 border shadow-glass backdrop-blur-xl
+    relative flex items-end gap-3 p-2.5 rounded-[32px] bg-surface/90 border shadow-glass backdrop-blur-2xl
     ${transitionClasses}
     ${stateColorClasses}
     ${isDisabled
-      // Clear indication of disabled state. Reduced grayscale for better contrast (A11y).
+      // Clear indication of disabled state
       ? 'opacity-60 grayscale-[40%] pointer-events-none'
-      : ''}
+      : 'motion-safe:hover:shadow-xl motion-safe:hover:scale-[1.01]'}
   `;
 
   return (

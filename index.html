@@ -158,46 +158,48 @@
       /*  Using RGB triplets for efficient opacity manipulation in Tailwind.*/
       /* ------------------------------------------------------------------ */
       :root {
-        /* Light Mode (Stripe Inspired - Clean, Professional, Subtle Depth) */
-        --background: 249 250 251;      /* Cool, light gray background (#f9fafb) */
-        
+        /* Light Mode (Jony Ive × Stripe - Refined, Purposeful, Sophisticated) */
+        --background: 250 251 252;      /* Ultra-light cool gray (#fafbfc) */
+
         --surface-bg: 255 255 255;        /* Pure white panels */
-        --surface-highlight: 243 244 246; /* Subtle interaction state */
-        --surface-border: 229 231 235;    /* Clear structural borders */
+        --surface-highlight: 246 247 249; /* Subtle interaction state */
+        --surface-border: 226 232 240;    /* Refined structural borders */
 
-        --text-primary: 17 24 39;       /* Deep gray for maximum readability (A11y) */
-        --text-secondary: 107 114 128;
-        --text-tertiary: 156 163 175;
+        --text-primary: 15 23 42;       /* Slate 900 - Deep, crisp readability */
+        --text-secondary: 100 116 139;  /* Slate 500 */
+        --text-tertiary: 148 163 184;   /* Slate 400 */
 
-        /* Accent: A professional, accessible indigo (Stripe inspired) */
-        --accent-bg: 99 102 241;        /* Indigo 500 */
+        /* Accent: Sophisticated blue with energy (DraftKings influence) */
+        --accent-bg: 59 130 246;        /* Blue 500 - Vibrant but professional */
         --accent-fg: 255 255 255;
-        --accent-hover: 79 70 229;
+        --accent-hover: 37 99 235;      /* Blue 600 */
 
-        --success: 16 185 129;
-        --danger: 239 68 68;
+        --success: 34 197 94;           /* Green 500 */
+        --danger: 239 68 68;            /* Red 500 */
+        --warning: 251 191 36;          /* Amber 400 */
       }
 
       .dark {
-        /* Dark Mode (Linear Inspired - Deep, Focused, Monochrome Elegance) */
+        /* Dark Mode (Vercel × Linear - Deep, Monochrome, Premium) */
         --background: 0 0 0;            /* True Black (OLED Optimized) */
 
-        --surface-bg: 18 18 18;           /* Near black for subtle elevation */
-        --surface-highlight: 38 38 38;  /* Interaction state */
-        --surface-border: 51 51 51;       /* Subtle structural borders (#333) */
+        --surface-bg: 17 17 17;           /* Near black for subtle elevation */
+        --surface-highlight: 39 39 42;  /* Zinc 800 - Refined interaction */
+        --surface-border: 63 63 70;       /* Zinc 700 - Sophisticated borders */
 
-        --text-primary: 245 245 245;
-        --text-secondary: 163 163 163;  /* #a3a3a3 */
-        --text-tertiary: 115 115 115;
+        --text-primary: 250 250 250;    /* Almost white for clarity */
+        --text-secondary: 161 161 170;  /* Zinc 400 */
+        --text-tertiary: 113 113 122;   /* Zinc 500 */
 
-        /* Monochrome accent for premium feel (Linear style) */
+        /* Monochrome accent for premium feel (Vercel/Linear style) */
         --accent-bg: 255 255 255;
         --accent-fg: 0 0 0;
-        --accent-hover: 220 220 220;
+        --accent-hover: 228 228 231;    /* Zinc 200 */
 
-        /* Brightened semantic colors for dark mode visibility */
-        --success: 52 211 153;
-        --danger: 248 113 113;
+        /* Brightened semantic colors for dark mode */
+        --success: 74 222 128;          /* Green 400 */
+        --danger: 248 113 113;          /* Red 400 */
+        --warning: 251 191 36;          /* Amber 400 */
       }
 
       /* ------------------------------------------------------------------ */
@@ -267,73 +269,129 @@
       /* ------------------------------------------------------------------ */
 
       /* 1. Subtle Noise Texture (Jony Ive Polish): Adds realism and depth. */
-      .bg-effects::before {
+      .bg-effects::before,
+      .bg-noise::before {
         content: "";
         position: absolute;
         inset: 0;
-        /* Placed behind content for safety */
         z-index: -1;
-        opacity: 0.035; /* Extremely subtle */
-        /* High-resolution, efficient inline SVG noise pattern */
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.028; /* Ultra-subtle for premium feel */
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         pointer-events: none;
       }
 
-      /* 2. Radial Gradient Background (Vercel Inspired Subtle Lighting) - Dark Mode Only */
-      /* Adds depth and focus without being distracting. */
+      /* 2. Radial Gradient Background (Vercel Inspired Subtle Lighting) */
       .dark .bg-effects::after {
           content: '';
           position: absolute;
           inset: 0;
-          z-index: -2; /* Behind the noise texture */
-          /* A subtle radial gradient from the top center */
-          background-image: radial-gradient(circle at top center, rgba(var(--surface-highlight), 0.3) 0%, rgba(0,0,0,0) 60%);
+          z-index: -2;
+          background-image: radial-gradient(
+            ellipse 120% 80% at 50% -20%,
+            rgba(var(--surface-highlight), 0.15) 0%,
+            transparent 50%
+          );
           pointer-events: none;
       }
 
-      /* Refined Glassmorphism (iOS/macOS Style) */
+      .light .bg-effects::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: -2;
+          background-image: radial-gradient(
+            ellipse 120% 80% at 50% -20%,
+            rgba(var(--accent-bg), 0.04) 0%,
+            transparent 50%
+          );
+          pointer-events: none;
+      }
+
+      /* Refined Glassmorphism (iOS/macOS Style - Premium) */
       .glass-panel {
-        background: rgba(var(--surface-bg), 0.7);
-        /* High blur and saturation creates the vibrant, "frosted glass" effect */
-        backdrop-filter: blur(24px) saturate(180%);
-        -webkit-backdrop-filter: blur(24px) saturate(180%);
-        /* Subtle inner border highlight */
-        border: 1px solid rgba(var(--surface-border), 0.5);
-        /* Performance hint for the compositor layer */
+        background: rgba(var(--surface-bg), 0.75);
+        backdrop-filter: blur(32px) saturate(180%);
+        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        border: 1px solid rgba(var(--surface-border), 0.4);
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
         will-change: backdrop-filter;
       }
-      
-      /* Interactive Glass Elements (Buttons/Inputs) */
+
+      .dark .glass-panel {
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+      }
+
+      .glass-panel-subtle {
+        background: rgba(var(--surface-bg), 0.6);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid rgba(var(--surface-border), 0.2);
+      }
+
+      /* Interactive Glass Elements (Buttons/Inputs) - Apple-level polish */
       .glass-button {
-        background: rgba(var(--surface-highlight), 0.4);
+        background: rgba(var(--surface-highlight), 0.5);
         border: 1px solid rgba(var(--surface-border), 0.3);
-        backdrop-filter: blur(15px);
-        /* Snappy interaction feedback */
-        transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        backdrop-filter: blur(16px);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .glass-button:hover {
-        background: rgba(var(--surface-highlight), 0.7);
-        transform: translateY(-1px); /* Subtle lift */
+        background: rgba(var(--surface-highlight), 0.8);
+        border-color: rgba(var(--surface-border), 0.5);
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
       }
       .glass-button:active {
-        transform: translateY(0px) scale(0.98); /* Tactile press feedback */
+        transform: translateY(0px) scale(0.99);
         transition-duration: 0.1s;
+      }
+
+      .glass-button-vibrant {
+        background: rgba(var(--accent-bg), 0.12);
+        border: 1px solid rgba(var(--accent-bg), 0.25);
+        backdrop-filter: blur(16px);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .glass-button-vibrant:hover {
+        background: rgba(var(--accent-bg), 0.18);
+        border-color: rgba(var(--accent-bg), 0.35);
+        box-shadow: 0 0 20px -5px rgba(var(--accent-bg), 0.3);
       }
 
       /* ------------------------------------------------------------------ */
       /*  Utilities & Component Styles                                      */
       /* ------------------------------------------------------------------ */
 
-      /* Ultra-thin, unobtrusive scrollbar (macOS/Linear aesthetic) */
-      ::-webkit-scrollbar { width: 6px; height: 6px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb {
-        background: rgba(var(--text-tertiary), 0.3);
-        border-radius: 6px;
+      /* Premium scrollbar (macOS/Linear aesthetic with more refinement) */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
       }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(var(--text-secondary), 0.5); }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(var(--text-tertiary), 0.25);
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--text-secondary), 0.4);
+        background-clip: padding-box;
+      }
 
-      /* Utility for hiding scrollbars on internal containers */
+      /* Firefox scrollbar */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(var(--text-tertiary), 0.25) transparent;
+      }
+
+      /* Utility for hiding scrollbars */
       .scrollbar-hide::-webkit-scrollbar { display: none; }
       .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -341,6 +399,37 @@
       .font-numeric {
         font-variant-numeric: tabular-nums;
         letter-spacing: 0;
+      }
+
+      /* Shadow utilities (Jony Ive refinement) */
+      .shadow-glass {
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(0, 0, 0, 0.02);
+      }
+
+      .dark .shadow-glass {
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(255, 255, 255, 0.05);
+      }
+
+      .shadow-glass-inset {
+        box-shadow:
+          inset 0 1px 2px 0 rgba(0, 0, 0, 0.05),
+          0 0 0 1px rgba(0, 0, 0, 0.02);
+      }
+
+      .shadow-glow-accent-sm {
+        box-shadow: 0 0 15px -3px rgba(var(--accent-bg), 0.3);
+      }
+
+      .shadow-glow-sm {
+        box-shadow: 0 0 20px -5px rgba(var(--accent-bg), 0.4);
+      }
+
+      .dark .shadow-glow-sm {
+        box-shadow: 0 0 25px -5px rgba(255, 255, 255, 0.15);
       }
     </style>
 
