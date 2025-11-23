@@ -1,0 +1,5 @@
+{
+  "name": "SharpEdge NHL",
+  "description": "A sharp betting analysis companion for NHL, providing market snapshots, context, and risk analysis using live data.",
+  "requestFramePermissions": []
+}
